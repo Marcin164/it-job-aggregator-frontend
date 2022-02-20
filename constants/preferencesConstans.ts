@@ -1,0 +1,3 @@
+export const cities:Array<string> = ["Wrocław", "Warszawa", "Kraków", "Gdańsk", "Poznań", "Trójmiasto", "Katowice", "Łódź", "Białystok", "Lublin", "Rzeszów", "Szczecin"]
+export const skills = ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Vue", "Angular", "Next", "Gatsby", "Nuxt", "Node", "Nest", "GraphQL", "Redux", "Vuex", "Tailwind", "Bootstrap", "Java",
+"Spring", "Kotlin", "Jetpack", "Dagger"]

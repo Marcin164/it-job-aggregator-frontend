@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonCheckbox from "../components/ButtonCheckbox";
-
+import { cities } from "../constants/preferencesConstans";
 type Props = {};
 
 const Preferences = (props: Props) => {
@@ -14,9 +14,16 @@ const Preferences = (props: Props) => {
       </h2>
       <ButtonCheckbox label="Yes" id="Yes" type="checkbox" name="remote" />
       <ButtonCheckbox label="No" id="No" type="checkbox" name="remote" />
+
       <h2 className="text-2xl text-orange-600 p-2 align-center text-center font-bold">
         Where would you like to work?
       </h2>
+      <div className="container flex flex-wrap justify-center gap-y-3 ">
+        {cities.sort().map((city) => (
+          <ButtonCheckbox key={city} label={city} id={city} type="checkbox" />
+        ))}
+      </div>
+
       <h2 className="text-2xl text-orange-600 p-2 align-center text-center font-bold">
         What kind of company are you interested in?
       </h2>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   label?: string;
@@ -15,10 +15,11 @@ const ButtonCheckbox = (props: Props) => {
   return (
     <>
       <label
-        className={`${style} px-8 py-3 border-2 rounded`}
+        className={`${style} border-2 rounded w-[100px] h-[50px] flex justify-center items-center`}
         htmlFor={props.id}
-      >
+      ><span>
         {props.label}
+        </span>
       </label>
       <input
         id={props.id}
