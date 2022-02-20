@@ -1,12 +1,13 @@
 import React from 'react'
 
 type Props = {
-    value: string
+    value?: string
+    className?:string
 }
 
 const Button = (props: Props) => {
   return (
-    <button className="bg-orange-600 px-10 py-2 text-xl text-white rounded">{props.value}</button>
+    <button className={`${props.className} px-10 py-2 text-xl my-2 rounded w-fit`}>{props.value}</button>
   )
 }
 

@@ -1,14 +1,8 @@
-import Input from "../components/Input";
-import Button from "../components/Button"
 import "../styles/globals.css";
+import type { AppProps } from 'next/app'
 
-function MyApp() {
-  return (
-    <div>
-      <Input label="Surname" type="text"/>
-      <Button value="Log In"/>
-    </div>
-  );
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
 }
 
-export default MyApp;
+export default MyApp
