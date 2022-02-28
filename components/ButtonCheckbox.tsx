@@ -6,6 +6,7 @@ type Props = {
   type: string;
   name?: string
   checked?:boolean
+  className?:string
 };
 
 const ButtonCheckbox = (props: Props) => {
@@ -15,16 +16,16 @@ const ButtonCheckbox = (props: Props) => {
   return (
     <>
       <label
-        className={`${style} border-2 rounded w-[100px] h-[50px] flex justify-center items-center`}
+        className={`${style} border-2 rounded w-[100px] h-[50px] flex justify-center items-center box-border px-2`}
         htmlFor={props.id}
-      ><span>
+      ><span className="truncate">
         {props.label}
         </span>
       </label>
       <input
         id={props.id}
         type={props.type}
-        className="invisible"
+        className="hidden"
         name={props.name}
         onChange={(e: any) => {
           e.currentTarget.checked
