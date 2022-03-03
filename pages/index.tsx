@@ -1,8 +1,10 @@
 import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
+const Home = () => {
   return (
-    <span>Index</span>
+    <>
+
+    </>
   )
 }
 
