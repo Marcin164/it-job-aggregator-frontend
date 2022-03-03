@@ -11,7 +11,7 @@ const Navbar = (props: Props) => {
   }
 
   return (
-    <div className="w-screen h-[40px] relative">
+    <div className="w-full h-[40px] relative">
       <div className="w-[100px] h-full flex justify-center items-center float-left">
         <span className="font-bold text-2xl text-orange-600">LOGO</span>
       </div>
