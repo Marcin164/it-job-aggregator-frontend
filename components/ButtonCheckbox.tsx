@@ -16,7 +16,7 @@ const ButtonCheckbox = (props: Props) => {
   return (
     <>
       <label
-        className={`${style} border-2 rounded w-[100px] h-[50px] flex justify-center items-center box-border px-2`}
+        className={`${style} border-2 rounded-lg w-[100px] h-[50px] flex justify-center items-center box-border px-2`}
         htmlFor={props.id}
       ><span className="truncate">
         {props.label}
