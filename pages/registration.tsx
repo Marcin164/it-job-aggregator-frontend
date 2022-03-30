@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router';
 import axios from "axios"
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -10,7 +11,9 @@ let dataObject:any = {}
 const Registration = (props: Props) => {
   const [repeatedPassword, setRepeatedPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
-  const [registerData, setRegisterData] = useState({})
+  const [registerData, setRegisterData] = useState<any>({})
+
+  const router = useRouter()
 
   const getValue = (e:React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -30,7 +33,7 @@ const Registration = (props: Props) => {
     setErrorMessage("")
       if(repeatedPassword === dataObject.password){
         axios.post("http://localhost:4001/user/register", registerData)
-        .then((res) => {console.log(res)})
+        .then(() => {})
         .catch((err) => {getErrors(err)})
       }else{
         setErrorMessage("Not the same password!")
