@@ -32,16 +32,19 @@ const Registration = (props: Props) => {
   const sendData = () => {
     setErrorMessage("")
       if(repeatedPassword === dataObject.password){
-        axios.post("http://localhost:4001/user/register", registerData)
-        .then(() => {})
+        axios.post("http://localhost:4000/user/register", registerData)
+        .then(() => {router.push({
+          pathname: "/login",
+          query:registerData.email
+        })})
         .catch((err) => {getErrors(err)})
       }else{
         setErrorMessage("Not the same password!")
       } 
-
   }
 
   const getErrors = (error:any) => {
+    console.log(error)
     if(error !== undefined) return Object.values(error.response.data.errors).forEach((res:any) => {setErrorMessage(res.properties.message)})
     return true
   }

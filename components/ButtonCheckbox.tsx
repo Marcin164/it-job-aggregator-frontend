@@ -7,11 +7,16 @@ type Props = {
   name?: string
   checked?:boolean
   className?:string
+  onClick?:(e?:any) => any 
+  onChange?:(e?:any) => any
 };
 
 const ButtonCheckbox = (props: Props) => {
-
   const [style, setStyle] = useState("font-normal bg-gray-200 border-gray-200");
+
+  const changeStyle = (e:any) => {
+    e.currentTarget.checked ? setStyle("font-bold bg-orange-600/50 border-orange-600") : setStyle("font-normal bg-gray-200 border-gray-200");
+  }
 
   return (
     <>
@@ -27,11 +32,10 @@ const ButtonCheckbox = (props: Props) => {
         type={props.type}
         className="hidden"
         name={props.name}
-        onChange={(e: any) => {
-          e.currentTarget.checked
-            ? setStyle("font-bold bg-orange-600/50 border-orange-600")
-            : setStyle("font-normal bg-gray-200 border-gray-200");
-        }}
+        value={props.label}
+        onChange={changeStyle}
+        onClick={props.onClick}
+        checked={props.checked}
       />
     </>
   );

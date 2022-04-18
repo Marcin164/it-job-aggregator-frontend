@@ -3,7 +3,7 @@ import React from 'react'
 type Props = {
     value?: string
     className?:string
-    onClick?:() => any
+    onClick?:(e?:any) => any
 }
 
 const Button = (props: Props) => {

@@ -1,11 +1,18 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import EmployerCard from "../../components/EmployerCard";
 import Pagination from "../../components/Pagination";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router"
 
-type Props = {};
+const Employers = () => {
+  const [cookies, setCookies] = useCookies(["accessToken"])
+  const router = useRouter()
 
-const Employers = (props: Props) => {
+  useEffect(() => {
+    if(cookies.accessToken === undefined) router.push("/login")
+  }, [])
+
   return (
     <>
       <Pagination />

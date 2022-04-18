@@ -1,12 +1,22 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import Button from "../../components/Button";
 import OfferCard from "../../components/OfferCard";
 import Pagination from "../../components/Pagination";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router"
 
 type Props = {};
 
 const WorkOffers = (props: Props) => {
+  const [cookies, setCookies] = useCookies(["accessToken", "isPreferences"])
+  const router = useRouter()
+  
+  useEffect(() => {
+    if(cookies.accessToken === undefined) router.push("/login")
+    if(cookies.isPreferences === false) router.push("/preferences/work")
+  }, [])
+
   return (
     <div className="w-full">
       <div className="w-full">ADD</div>

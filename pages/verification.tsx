@@ -1,57 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from 'next/router'
+import React, { useEffect, useState, useRef } from "react";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router"
 import Button from "../components/Button";
-import InputAlt from "../components/InputAlt";
+import Input from "../components/Input";
 import axios from "axios";
 
 type Props = {};
 
-let codeArray: Array<number> = []
-
 const Verification = (props: Props) => {
-  const [pressedKey, setPressedKey] = useState(0)
   const router = useRouter()
+  const [cookies, setCookies] = useCookies(["accessToken","isActive"])
+  const [error, setError] = useState("")
 
-  const handleKeyDown = (e:any) => {
-    setPressedKey(e.keyCode)
-  };
+  useEffect(() => {
+    router.push("/login")
+    if(cookies.isActive === 'true') router.back()
+  }, [])
 
-  React.useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-  
-
-  const getCodeDigit = (e: any) => {
-    let form: any = e.target.form
-    const index = [...form].indexOf(e.target);
-    let value = e.currentTarget.value 
-
-    if(value.toString().length > 1) return false
-    if (pressedKey === 8) {
-      codeArray.splice(index, 1)
-      if (index > 0) form.elements[index - 1].focus();
-    } else {
-      codeArray.push(value)
-      if (index < 5) form.elements[index + 1].focus();
-    }
-
-    if(codeArray.length === 6) sendVerificationCode()
-    e.preventDefault()
+  const getCode = (e:any) => {
+    let value = e.currentTarget.value
+    console.log(value.toString().length)
+    if(value.toString().length === 6) sendCodeToVerify(value)
   }
 
-  const sendVerificationCode = () => {
-    let codeString = ""
-    for(let i = 0 ; i < codeArray.length ; i++){
-      codeString += codeArray[i].toString()
-    }
-    console.log(codeString)
-    axios.post("http://localhost:4001/user/verifyAccount", {email:router.query.email, code:codeString})
-      .then((res) => { console.log("Verified!"); })
-      .catch((err) => { console.log(err.response.data) })
+  const sendCodeToVerify = (code:any) => {
+    console.log("Dziala")
+    const headers = {Authorization: `Bearer ${cookies.accessToken}`}
+    axios.post("http://localhost:4000/user/verifyAccount", {code}, {headers: headers})
+    .then((res) => {setCookies("accessToken", true); router.push("/preferences/work ")})
+    .catch((err) => {setError(err.response.data)})
   }
 
   return (
@@ -59,14 +36,9 @@ const Verification = (props: Props) => {
       <h2 className="text-2xl text-orange-600 p-2 align-center text-center font-bold">
         We send you an activation code to your email
       </h2>
-      <div >
-        <form className="flex justify-around mt-6">
-          <InputAlt type="number" onChange={getCodeDigit}/>
-          <InputAlt type="number" onChange={getCodeDigit}/>
-          <InputAlt type="number" onChange={getCodeDigit}/>
-          <InputAlt type="number" onChange={getCodeDigit}/>
-          <InputAlt type="number" onChange={getCodeDigit}/>
-          <InputAlt type="number" onChange={getCodeDigit}/>
+      <div>
+        <form className="flex justify-around mt-6 form">
+          <Input type="number" onChange={getCode}/>
         </form>
       </div>
       <div className="flex justify-center">
@@ -75,6 +47,7 @@ const Verification = (props: Props) => {
           className="bg-orange-600 text-white mt-10"
         />
       </div>
+      <div className="flex justify-center text-red-600">{error}</div>
     </div>
   );
 };
