@@ -25,12 +25,6 @@ const WorkOffers = (props: Props) => {
         <Button className="bg-gray-200" value="Show favourites"/>
         <Pagination/>
         <OfferCard/>
-        <OfferCard/>
-        <OfferCard/>
-        <OfferCard/>
-        <OfferCard/>
-        <OfferCard/>
-        <OfferCard/>
       </div>
 
       <div className="w-full">ADD</div>

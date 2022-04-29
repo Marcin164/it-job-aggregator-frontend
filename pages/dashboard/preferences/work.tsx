@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from "react";
-import ButtonCheckbox from "../../components/ButtonCheckbox";
-import ButtonRadio from "../../components/ButtonRadio";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+import React, { ReactElement ,useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router"
+import ButtonCheckbox from "../../../components/ButtonCheckbox";
+import ButtonRadio from "../../../components/ButtonRadio";
+import Input from "../../../components/Input";
+import Button from "../../../components/Button";
 import {
   cities,
   companies,
   types,
   levels,
   categories,
-} from "../../constants/preferencesConstans";
-import PreferencesCard from "../../components/PreferencesCard";
+} from "../../../constants/preferencesConstans";
+import PreferencesCard from "../../../components/PreferencesCard";
 import axios from "axios"
+import DashboardLayout from "../../../layouts/DashboardLayout";
 
 const preferencesObject:any = {}
 
 const Work = () => {
   const [preferences, setPreferences] = useState<any>({remote: true})
+  const [cookies, setCookies, removeCookies] = useCookies(["accessToken", "refreshToken"])
+  const router = useRouter()
 
   const getPreferences = (e: any) => {
     const checked = e.currentTarget.checked
@@ -53,7 +58,24 @@ const Work = () => {
   }
 
   const sendPreferences = () => {
-    axios.post("http://localhost:4000/user/setWorkPreferences")
+      const headers = {Authorization: `Bearer ${cookies.accessToken}`}
+      axios.post("http://localhost:4000/user/setWorkPreferences", preferences, {headers: headers})
+      .then((result) => {router.push("/preferences/skills")})
+      .catch((error) => {if(error.response.data === "EXPIRED") getNewToken()})
+  }
+
+  const getNewToken = () => {
+    axios
+      .post("http://localhost:4000/token/refresh", {
+        token: cookies.refreshToken,
+      })
+      .then((result) => {
+        removeCookies("accessToken");
+        setCookies("accessToken", result.data.accessToken);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }
 
   return (
@@ -171,11 +193,19 @@ const Work = () => {
       </div>
 
       <div className="container flex justify-evenly">
-        <Button value="Cancel" className="bg-orange-600 text-white" />
-        <Button value="Next" className="bg-orange-600 text-white" />
+        <Button value="Cancel" className="bg-orange-600 text-white" onClick={() => router.back()}/>
+        <Button value="Next" className="bg-orange-600 text-white" onClick={sendPreferences}/>
       </div>
       {/* end of terms of emplyment container*/}
     </div>
+  )
+}
+
+Work.getLayout = function getLayout(page:ReactElement) {
+  return (
+    <DashboardLayout>
+        {page}
+    </DashboardLayout>
   )
 }
 

@@ -34,8 +34,8 @@ const Registration = (props: Props) => {
       if(repeatedPassword === dataObject.password){
         axios.post("http://localhost:4000/user/register", registerData)
         .then(() => {router.push({
-          pathname: "/login",
-          query:registerData.email
+          pathname: "/verification",
+          query: {email:registerData.email}
         })})
         .catch((err) => {getErrors(err)})
       }else{

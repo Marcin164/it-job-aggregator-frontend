@@ -9,26 +9,24 @@ type Props = {};
 
 const Verification = (props: Props) => {
   const router = useRouter()
-  const [cookies, setCookies] = useCookies(["accessToken","isActive"])
+  const [cookies] = useCookies(["isActive"])
   const [error, setError] = useState("")
 
   useEffect(() => {
-    router.push("/login")
-    if(cookies.isActive === 'true') router.back()
+    if (cookies.isActive === 'true') router.back()
   }, [])
 
-  const getCode = (e:any) => {
+  const getCode = (e: any) => {
     let value = e.currentTarget.value
-    console.log(value.toString().length)
-    if(value.toString().length === 6) sendCodeToVerify(value)
+    if (value.toString().length !== 6) setError("")
+    if (value.toString().length === 6) sendCodeToVerify(value)
   }
 
-  const sendCodeToVerify = (code:any) => {
-    console.log("Dziala")
-    const headers = {Authorization: `Bearer ${cookies.accessToken}`}
-    axios.post("http://localhost:4000/user/verifyAccount", {code}, {headers: headers})
-    .then((res) => {setCookies("accessToken", true); router.push("/preferences/work ")})
-    .catch((err) => {setError(err.response.data)})
+  const sendCodeToVerify = (code: any) => {
+    let email = router.query.email
+    axios.post("http://localhost:4000/user/verifyAccount", { code, email })
+      .then((res) => { router.push("/login") })
+      .catch((err) => { setError(err.response.data) })
   }
 
   return (
@@ -38,7 +36,7 @@ const Verification = (props: Props) => {
       </h2>
       <div>
         <form className="flex justify-around mt-6 form">
-          <Input type="number" onChange={getCode}/>
+          <Input type="number" onChange={getCode} />
         </form>
       </div>
       <div className="flex justify-center">
